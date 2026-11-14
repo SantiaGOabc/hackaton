@@ -233,6 +233,45 @@ async def upload_csv(
         "bytes_received": len(contents)
     }
 
+# --- ENDPOINTS DE NOTIFICACIÓN (TELEGRAM & WHATSAPP) ---
+from notifier import send_telegram_alert, get_whatsapp_dispatch_link, format_alert_message
+
+@app.post("/api/alerts/notify")
+def dispatch_alert_notification(payload: dict):
+    """
+    Despacha una alerta activa a los canales de respuesta (Telegram, WhatsApp).
+    Payload: { alert_data: dict, bot_token: optional str, chat_id: optional str }
+    """
+    alert_data = payload.get("alert_data", {})
+    bot_token = payload.get("bot_token")
+    chat_id = payload.get("chat_id")
+
+    res = send_telegram_alert(alert_data, bot_token=bot_token, chat_id=chat_id)
+    return res
+
+@app.get("/api/alerts/whatsapp-link")
+def get_whatsapp_link(
+    nivel: str = "CRÍTICO",
+    z_score: float = 3.2,
+    zone: str = "P.N. Tunari (Cota 2750)",
+    frp: float = 85.0,
+    lat: float = -17.31,
+    lng: float = -66.21
+):
+    """Genera enlace web directo para abrir WhatsApp con el reporte táctico pre-llenado."""
+    alert_data = {
+        "nivel": nivel,
+        "z_score": z_score,
+        "zone": zone,
+        "frp": frp,
+        "lat": lat,
+        "lng": lng
+    }
+    return {
+        "whatsapp_url": get_whatsapp_dispatch_link(alert_data),
+        "formatted_text": format_alert_message(alert_data)
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
