@@ -4,7 +4,7 @@ color 0A
 cls
 
 echo ======================================================================
-echo          GEOIGNIS COCHABAMBA - NASA Space Apps 2026 / GAMC
+echo          PYROCHIKA COCHABAMBA - NASA Space Apps 2026 / GAMC
 echo    Sistema de Armonizacion Satelital y Alerta Temprana de Incendios
 echo ======================================================================
 echo.
