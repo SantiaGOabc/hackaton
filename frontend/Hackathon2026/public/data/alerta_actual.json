@@ -1,10 +1,10 @@
 {
-  "fecha_corte": "2026-11-14 10:56",
+  "fecha_corte": "2026-11-14 11:53",
   "mes_evaluado": "Diciembre 2025",
-  "eventos_armonizados_mes": 3,
+  "eventos_armonizados_mes": 2,
   "promedio_historico_mu": 3.5,
   "desviacion_sigma": 3.11,
-  "z_score": -0.16,
+  "z_score": -0.48,
   "semaforo": {
     "nivel": "NORMAL",
     "color": "#10b981",
@@ -12,7 +12,7 @@
     "descripcion": "Comportamiento dentro del rango histórico normal"
   },
   "ultimos_30_dias": {
-    "total_focos_armonizados": 5,
+    "total_focos_armonizados": 4,
     "total_detecciones_crudas": 5,
     "frp_maximo": 3.7
   },
