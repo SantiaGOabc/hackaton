@@ -1,0 +1,23 @@
+{
+  "fecha_corte": "2026-11-14 10:56",
+  "mes_evaluado": "Diciembre 2025",
+  "eventos_armonizados_mes": 3,
+  "promedio_historico_mu": 3.5,
+  "desviacion_sigma": 3.11,
+  "z_score": -0.16,
+  "semaforo": {
+    "nivel": "NORMAL",
+    "color": "#10b981",
+    "badge": "Verde",
+    "descripcion": "Comportamiento dentro del rango histórico normal"
+  },
+  "ultimos_30_dias": {
+    "total_focos_armonizados": 5,
+    "total_detecciones_crudas": 5,
+    "frp_maximo": 3.7
+  },
+  "sesgo_evitado": {
+    "z_score_sin_armonizar": -0.35,
+    "explicacion": "Sin armonización espacial, el exceso de píxeles de VIIRS generaría una falsa alarma inflada."
+  }
+}
