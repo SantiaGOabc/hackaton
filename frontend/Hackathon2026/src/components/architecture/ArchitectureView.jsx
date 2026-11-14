@@ -13,10 +13,10 @@ export default function ArchitectureView() {
         </p>
         <ul>
           <li>
-            <strong>Armonización Cuadrangular:</strong> Proyecta cada punto lat/lon a una grilla de resolución unificada de ~1.11 km x 1.06 km (2 decimales).
+            <strong>Buffer Espacial Físico (1.2 km Haversine):</strong> Agrupa las detecciones dentro del radio de influencia del sensor de mayor huella (MODIS, ~1.2 km) en tiempo solar local (UTC-4), evitando fragmentaciones artificiales por cuadrícula.
           </li>
           <li>
-            <strong>Colapso Espacio-Temporal:</strong> Agrupa por <code>[acq_date, lat_grid, lon_grid]</code>. Si MODIS (1km) y VIIRS (375m) detectan el mismo foco el mismo día, se unifican integrando potencia radiativa (<code>frp_max</code>) y centroide.
+            <strong>Colapso Espacio-Temporal con Centroide Ponderado:</strong> Si MODIS (1km) y VIIRS (375m) detectan el mismo foco el mismo día, se unifican integrando el centroide físico ponderado por FRP ($\sum \text{coord} \cdot \text{FRP} / \sum \text{FRP}$) y potencia máxima radiativa.
           </li>
           <li>
             <strong>Z-Score Climatológico:</strong> Corrige el sesgo mensual aplicando $Z = (E - \mu_m) / \sigma_m$. Los picos de <strong>Septiembre 2024 (Z: +4.56)</strong> y <strong>Mayo 2024 (Z: +2.84)</strong> corresponden a las emergencias históricas reales.

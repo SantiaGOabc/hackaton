@@ -39,11 +39,11 @@ export default function FireFilters({
           onChange={(e) => setSelectedZone(e.target.value)}
           style={{ width: '100%' }}
         >
-          <option value="ALL">Todas las Zonas (Valle Central)</option>
-          <option value="P.N. Tunari (Cota > 2750)">🌲 P.N. Tunari (Cota &gt; 2750)</option>
-          <option value="Zonas Periurbanas GAMC">🏘️ Zonas Periurbanas GAMC</option>
-          <option value="Distritos Urbanos GAMC">🏙️ Distritos Urbanos (Cercado)</option>
-          <option value="Área Metropolitana Externa">🗺️ Área Metropolitana Externa</option>
+          <option value="ALL">Todas las Zonas (Valle Central y Serranías)</option>
+          <option value="P.N. Tunari (Cota > 2750)">Área de Protección Cota &gt; 2750</option>
+          <option value="Zonas Periurbanas GAMC">Zonas Periurbanas GAMC</option>
+          <option value="Distritos Urbanos GAMC">Distritos Urbanos (Cercado)</option>
+          <option value="Área Metropolitana Externa">Área Metropolitana Externa (Región Kanata)</option>
         </select>
       </div>
 

@@ -43,6 +43,15 @@ export default function App() {
   const [clickedFeature, setClickedFeature] = useState(null);
   const [queryingWMS, setQueryingWMS] = useState(false);
 
+  // 6. Estados de análisis de viento y propagación del fuego
+  const [selectedFire, setSelectedFire] = useState(null);
+  const [spreadData, setSpreadData] = useState(null);
+  const [isSimulatingSpread, setIsSimulatingSpread] = useState(false);
+
+  const handleSpreadCalculated = (spread, center) => {
+    setSpreadData({ spread, center });
+  };
+
   // Carga inicial de datos desde el servicio API
   useEffect(() => {
     async function initData() {
@@ -153,6 +162,10 @@ export default function App() {
               filteredFires={filteredFires}
               clickedFeature={clickedFeature}
               queryingWMS={queryingWMS}
+              selectedFire={selectedFire}
+              onSpreadCalculated={handleSpreadCalculated}
+              isSimulatingSpread={isSimulatingSpread}
+              setIsSimulatingSpread={setIsSimulatingSpread}
             />
 
             <MapView
@@ -166,6 +179,10 @@ export default function App() {
               setBaseMapType={setBaseMapType}
               setClickedFeature={setClickedFeature}
               setQueryingWMS={setQueryingWMS}
+              selectedFire={selectedFire}
+              setSelectedFire={setSelectedFire}
+              spreadData={spreadData}
+              isSimulatingSpread={isSimulatingSpread}
             />
           </>
         )}

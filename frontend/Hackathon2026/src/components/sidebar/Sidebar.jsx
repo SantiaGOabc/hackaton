@@ -4,6 +4,7 @@ import BiasCorrectionCard from './BiasCorrectionCard';
 import LayerToggles from './LayerToggles';
 import FireFilters from './FireFilters';
 import FeatureInspector from './FeatureInspector';
+import WindSpreadWidget from '../map/WindSpreadWidget';
 
 export default function Sidebar({
   currentAlert,
@@ -28,7 +29,11 @@ export default function Sidebar({
   setShowRawAudit,
   filteredFires,
   clickedFeature,
-  queryingWMS
+  queryingWMS,
+  selectedFire,
+  onSpreadCalculated,
+  isSimulatingSpread,
+  setIsSimulatingSpread
 }) {
   return (
     <aside className="sidebar">
@@ -71,7 +76,15 @@ export default function Sidebar({
           filteredFires={filteredFires}
         />
 
-        {/* 5. Inspector WMS GetFeatureInfo */}
+        {/* 5. Análisis de Viento y Modelo de Propagación del Fuego */}
+        <WindSpreadWidget
+          selectedFire={selectedFire}
+          onSpreadCalculated={onSpreadCalculated}
+          isSimulating={isSimulatingSpread}
+          setIsSimulating={setIsSimulatingSpread}
+        />
+
+        {/* 6. Inspector WMS GetFeatureInfo */}
         <FeatureInspector
           clickedFeature={clickedFeature}
           queryingWMS={queryingWMS}

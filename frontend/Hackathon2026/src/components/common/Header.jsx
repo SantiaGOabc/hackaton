@@ -10,38 +10,42 @@ export default function Header({ activeTab, setActiveTab, currentAlert }) {
         </div>
         <div>
           <div className="brand-title">
-            TUNARI <span>FIRE WATCH</span>
-            <span className="brand-tag">GAMC & NASA Space Apps</span>
+            GEOIGNIS <span>COCHABAMBA</span>
+            <span className="brand-tag">NASA FIRMS & GAMC</span>
           </div>
           <div className="brand-subtitle">
-            Armonización MODIS/VIIRS (2000-2026) | P.N. Tunari (Cota 2750) & 15 Distritos
+            Sistema de Armonización Satelital (2000-2026) y Alerta Temprana de Incendios
           </div>
         </div>
       </div>
 
-      {/* Selector de Vistas / Pestañas */}
+      {/* Selector de Vistas / Pestañas Organizadas por Módulos */}
       <div className="nav-tabs">
         <button
           className={`nav-tab ${activeTab === 'map' ? 'active' : ''}`}
           onClick={() => setActiveTab('map')}
+          title="Módulo 1: Observatorio Geoespacial con capas WMS, armonización MODIS/VIIRS y análisis de viento"
         >
-          <MapPin size={15} /> Visor Geoespacial WMS
+          <MapPin size={15} /> Módulo 1: Visor WMS & Viento
         </button>
         <button
           className={`nav-tab ${activeTab === 'calendar' ? 'active' : ''}`}
           onClick={() => setActiveTab('calendar')}
+          title="Matriz multianual de meses vs años y anomalías térmicas Z-Score"
         >
-          <Calendar size={15} /> Calendario en Llamas (Z-Score)
+          <Calendar size={15} /> Calendario en Llamas
         </button>
         <button
           className={`nav-tab ${activeTab === 'patrol' ? 'active' : ''}`}
           onClick={() => setActiveTab('patrol')}
+          title="Módulo 2: Alerta temprana, focos en tiempo real y prioridades de despacho para bomberos y UGR"
         >
-          <Compass size={15} /> Patrullaje UGR & Distritos
+          <Compass size={15} /> Módulo 2: Alerta Bomberos & UGR
         </button>
         <button
           className={`nav-tab ${activeTab === 'architecture' ? 'active' : ''}`}
           onClick={() => setActiveTab('architecture')}
+          title="Especificación técnica de escalabilidad, ingestión satelital y Docker"
         >
           <Cpu size={15} /> Arquitectura & Escalabilidad
         </button>

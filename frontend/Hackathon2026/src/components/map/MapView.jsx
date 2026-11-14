@@ -22,11 +22,16 @@ export default function MapView({
   baseMapType,
   setBaseMapType,
   setClickedFeature,
-  setQueryingWMS
+  setQueryingWMS,
+  selectedFire,
+  setSelectedFire,
+  spreadData,
+  isSimulatingSpread
 }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const fireMarkersGroupRef = useRef(null);
+  const spreadGroupRef = useRef(null);
   const wmsCotaRef = useRef(null);
   const wmsPeriurbanoRef = useRef(null);
   const wmsDistritosRef = useRef(null);
@@ -84,8 +89,9 @@ export default function MapView({
         opacity: 0.65
       }).addTo(map);
 
-      // Grupo de marcadores de fuego
+      // Grupo de marcadores de fuego y propagación de viento
       fireMarkersGroupRef.current = L.layerGroup().addTo(map);
+      spreadGroupRef.current = L.layerGroup().addTo(map);
 
       // Evento Click para GetFeatureInfo en WMS GAMC
       map.on('click', async (e) => {
@@ -227,7 +233,7 @@ export default function MapView({
         <div style="font-family: 'Plus Jakarta Sans', sans-serif; min-width: 230px; color: #0f172a;">
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:5px; margin-bottom:6px;">
             <strong style="font-size:12px; color:#0f172a;">
-              ${f.sensor === 'AMBOS' ? '⭐ FUSIÓN MULTIESPECTRAL' : '🔥 EVENTO ARMONIZADO'}
+              ${f.sensor === 'AMBOS' ? 'FUSIÓN MULTIESPECTRAL' : 'EVENTO TÉRMICO ARMONIZADO'}
             </strong>
             <span style="font-size:10px; font-weight:700; background:#f1f5f9; padding:2px 6px; border-radius:4px; color:${color};">
               ${f.sensor}
@@ -246,9 +252,64 @@ export default function MapView({
         </div>
       `);
 
+      marker.on('click', () => {
+        if (setSelectedFire) setSelectedFire(f);
+      });
+
       group.addLayer(marker);
     });
-  }, [filteredFires, filteredRawFires, showRawAudit]);
+  }, [filteredFires, filteredRawFires, showRawAudit, setSelectedFire]);
+
+  // Renderizar Cono de Propagación de Fuego (Modelo Rothermel + Viento)
+  useEffect(() => {
+    if (!spreadGroupRef.current) return;
+    const group = spreadGroupRef.current;
+    group.clearLayers();
+
+    if (!isSimulatingSpread || !spreadData || !spreadData.spread || !spreadData.spread.polygon) {
+      return;
+    }
+
+    const { spread, center } = spreadData;
+
+    // Polígono del cono/elipse de avance
+    const polygon = L.polygon(spread.polygon, {
+      color: '#ef4444',
+      fillColor: '#ea580c',
+      fillOpacity: 0.35,
+      weight: 2,
+      dashArray: '5, 5'
+    });
+
+    polygon.bindPopup(`
+      <div style="font-family: 'Plus Jakarta Sans', sans-serif; min-width: 210px; color: #0f172a;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #fed7aa; padding-bottom:4px; margin-bottom:6px;">
+          <strong style="color:#c2410c; font-size:12px;">CONO DE PROPAGACIÓN TÉRMICA</strong>
+        </div>
+        <div style="font-size:11px; line-height:1.5;">
+          <div><b>Modelo:</b> Rothermel Rate of Spread (ROS)</div>
+          <div><b>Tasa de Avance:</b> ${spread.rateOfSpreadKmH} km/h</div>
+          <div><b>Distancia Proyectada:</b> ~${spread.forwardDistanceKm} km</div>
+          <div><b>Rumbo de Avance:</b> ${spread.bearing}° (${spread.cardinalDirection})</div>
+          <div style="margin-top:4px; color:#b45309; font-weight:700;">Nivel de Riesgo: ${spread.riskLevel}</div>
+        </div>
+      </div>
+    `);
+
+    group.addLayer(polygon);
+
+    // Vector central de avance (Línea direccional)
+    if (center && spread.polygon.length > 0) {
+      const tipIndex = Math.floor(spread.polygon.length / 2);
+      const tipCoord = spread.polygon[tipIndex] || spread.polygon[0];
+      const vectorLine = L.polyline([[center.lat, center.lng], tipCoord], {
+        color: '#f97316',
+        weight: 3,
+        dashArray: '2, 4'
+      });
+      group.addLayer(vectorLine);
+    }
+  }, [spreadData, isSimulatingSpread]);
 
   return (
     <main className="map-container">
